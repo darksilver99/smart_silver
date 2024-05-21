@@ -159,6 +159,10 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                   r'''$.id''',
                                 ).toString(),
                                 companyCode: _model.textController.text,
+                                authorization: getJsonField(
+                                  FFAppState().userData,
+                                  r'''$.token''',
+                                ).toString(),
                               );
                               if ((_model.apiResultcwt?.succeeded ?? true)) {
                                 if (functions.isSuccess(getJsonField(
@@ -167,13 +171,13 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                 ))) {
                                   _model.apiResultj5j =
                                       await GetuserdetailCall.call(
-                                    token: getJsonField(
-                                      FFAppState().userData,
-                                      r'''$.token''',
-                                    ).toString(),
                                     uid: getJsonField(
                                       FFAppState().userData,
                                       r'''$.id''',
+                                    ).toString(),
+                                    authorization: getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.token''',
                                     ).toString(),
                                   );
                                   if ((_model.apiResultj5j?.succeeded ??
