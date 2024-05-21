@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -233,6 +234,14 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                             );
                                           },
                                         );
+                                        await actions.checkTokenExpired(
+                                          context,
+                                          getJsonField(
+                                            (_model.apiResultj5j?.jsonBody ??
+                                                ''),
+                                            r'''$.msg''',
+                                          ).toString(),
+                                        );
                                       }
                                     } else {
                                       await showDialog(
@@ -272,6 +281,13 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                           ],
                                         );
                                       },
+                                    );
+                                    await actions.checkTokenExpired(
+                                      context,
+                                      getJsonField(
+                                        (_model.apiResultcwt?.jsonBody ?? ''),
+                                        r'''$.msg''',
+                                      ).toString(),
                                     );
                                   }
                                 } else {

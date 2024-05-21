@@ -79,21 +79,107 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                       ),
                       Text(
-                        'Current company : ${getJsonField(
-                          FFAppState().userData,
-                          r'''$.users_data_id''',
-                        ).toString()}',
+                        'Current company : ${valueOrDefault<String>(
+                          getJsonField(
+                            FFAppState().userData,
+                            r'''$.user_data.company_name''',
+                          )?.toString(),
+                          '-',
+                        )}',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Manrope',
                               letterSpacing: 0.0,
                             ),
                       ),
                       Text(
-                        'Permission : fff',
+                        'Permission : ${valueOrDefault<String>(
+                          getJsonField(
+                            FFAppState().userData,
+                            r'''$.user_data.subject''',
+                          )?.toString(),
+                          '-',
+                        )}',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Manrope',
                               letterSpacing: 0.0,
                             ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.0),
+                                  child: Image.network(
+                                    getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.photo''',
+                                    ).toString(),
+                                    width: 100.0,
+                                    height: 100.0,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Image.asset(
+                                      'assets/images/error_image.jpg',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'display image',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Manrope',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(100.0),
+                                  child: Image.network(
+                                    getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.user_data.image''',
+                                    ).toString(),
+                                    width: 100.0,
+                                    height: 100.0,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Image.asset(
+                                      'assets/images/error_image.jpg',
+                                      width: 100.0,
+                                      height: 100.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'company',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Manrope',
+                                        letterSpacing: 0.0,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       FFButtonWidget(
                         onPressed: () async {

@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/upload_data.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -323,17 +324,22 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
                                           );
                                         },
                                       );
+                                      await actions.checkTokenExpired(
+                                        context,
+                                        getJsonField(
+                                          (_model.apiResult68s?.jsonBody ?? ''),
+                                          r'''$.msg''',
+                                        ).toString(),
+                                      );
                                     }
                                   } else {
                                     await showDialog(
                                       context: context,
                                       builder: (alertDialogContext) {
                                         return AlertDialog(
-                                          title: Text(getJsonField(
-                                            (_model.apiResult68s?.jsonBody ??
-                                                ''),
-                                            r'''$.msg''',
-                                          ).toString()),
+                                          title: Text((_model.apiResult68s
+                                                  ?.exceptionMessage ??
+                                              '')),
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(
@@ -363,6 +369,13 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
                                         ],
                                       );
                                     },
+                                  );
+                                  await actions.checkTokenExpired(
+                                    context,
+                                    getJsonField(
+                                      (_model.apiResult97m?.jsonBody ?? ''),
+                                      r'''$.msg''',
+                                    ).toString(),
                                   );
                                 }
                               } else {
