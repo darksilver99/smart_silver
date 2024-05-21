@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -139,6 +141,7 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                 ),
                             validator: _model.textControllerValidator
                                 .asValidator(context),
+                            inputFormatters: [UpperCaseTextFormatter()],
                           ),
                         ),
                         Padding(
@@ -352,6 +355,19 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue,
+      TextEditingValue newValue,
+      ) {
+    return newValue.copyWith(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }

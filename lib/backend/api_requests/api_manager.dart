@@ -466,6 +466,9 @@ class ApiManager {
       result = ApiCallResponse(null, {}, -1, exception: e);
     }
 
+    print("result.jsonBody");
+    print(result.jsonBody);
+
     return result;
   }
 }
