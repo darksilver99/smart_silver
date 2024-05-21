@@ -15,6 +15,8 @@ class LoginPageModel extends FlutterFlowModel<LoginPageWidget> {
 
   final unfocusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+  // Stores action output result for [Backend Call - API (getuserdetail)] action in LoginPage widget.
+  ApiCallResponse? apiResultlm6;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;
