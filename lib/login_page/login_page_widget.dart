@@ -31,7 +31,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (FFAppState().userData != null) {
-        await GetuserdetailCall.call(
+        _model.apiResultlm6 = await GetuserdetailCall.call(
           authorization: getJsonField(
             FFAppState().userData,
             r'''$.token''',
@@ -41,13 +41,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             r'''$.id''',
           ).toString().toString(),
         );
-        if ((_model.apiResultlm5?.succeeded ?? true)) {
+        if ((_model.apiResultlm6?.succeeded ?? true)) {
           if (functions.isSuccess(getJsonField(
-            (_model.apiResultlm5?.jsonBody ?? ''),
+            (_model.apiResultlm6?.jsonBody ?? ''),
             r'''$.status''',
           ))) {
             if (functions.isNull(getJsonField(
-              (_model.apiResultlm5?.jsonBody ?? ''),
+              (_model.apiResultlm6?.jsonBody ?? ''),
               r'''$.users_data_id''',
             ))) {
               context.goNamed('JoinCompanyPage');
@@ -60,7 +60,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               builder: (alertDialogContext) {
                 return AlertDialog(
                   title: Text(getJsonField(
-                    (_model.apiResultlm5?.jsonBody ?? ''),
+                    (_model.apiResultlm6?.jsonBody ?? ''),
                     r'''$.msg''',
                   ).toString().toString()),
                   actions: [
@@ -75,7 +75,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             await actions.checkTokenExpired(
               context,
               getJsonField(
-                (_model.apiResultlm5?.jsonBody ?? ''),
+                (_model.apiResultlm6?.jsonBody ?? ''),
                 r'''$.msg''',
               ).toString().toString(),
             );
@@ -85,7 +85,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             context: context,
             builder: (alertDialogContext) {
               return AlertDialog(
-                title: Text((_model.apiResultlm5?.exceptionMessage ?? '')),
+                title: Text((_model.apiResultlm6?.exceptionMessage ?? '')),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(alertDialogContext),
