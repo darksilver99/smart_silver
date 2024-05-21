@@ -31,60 +31,38 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (FFAppState().userData != null) {
-        if (functions.isNull(getJsonField(
-          FFAppState().userData,
-          r'''$.users_data_id''',
-        ))) {
-          context.goNamed('JoinCompanyPage');
-        } else {
-          await GetuserdetailCall.call(
-            authorization: getJsonField(
-              FFAppState().userData,
-              r'''$.token''',
-            ).toString().toString(),
-            uid: getJsonField(
-              FFAppState().userData,
-              r'''$.id''',
-            ).toString().toString(),
-          );
-          if ((_model.apiResultlm5?.succeeded ?? true)) {
-            if (functions.isSuccess(getJsonField(
+        await GetuserdetailCall.call(
+          authorization: getJsonField(
+            FFAppState().userData,
+            r'''$.token''',
+          ).toString().toString(),
+          uid: getJsonField(
+            FFAppState().userData,
+            r'''$.id''',
+          ).toString().toString(),
+        );
+        if ((_model.apiResultlm5?.succeeded ?? true)) {
+          if (functions.isSuccess(getJsonField(
+            (_model.apiResultlm5?.jsonBody ?? ''),
+            r'''$.status''',
+          ))) {
+            if (functions.isNull(getJsonField(
               (_model.apiResultlm5?.jsonBody ?? ''),
-              r'''$.status''',
+              r'''$.users_data_id''',
             ))) {
-              context.goNamed('HomePage');
+              context.goNamed('JoinCompanyPage');
             } else {
-              await showDialog(
-                context: context,
-                builder: (alertDialogContext) {
-                  return AlertDialog(
-                    title: Text(getJsonField(
-                      (_model.apiResultlm5?.jsonBody ?? ''),
-                      r'''$.msg''',
-                    ).toString().toString()),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(alertDialogContext),
-                        child: Text('Ok'),
-                      ),
-                    ],
-                  );
-                },
-              );
-              await actions.checkTokenExpired(
-                context,
-                getJsonField(
-                  (_model.apiResultlm5?.jsonBody ?? ''),
-                  r'''$.msg''',
-                ).toString().toString(),
-              );
+              context.goNamed('HomePage');
             }
           } else {
             await showDialog(
               context: context,
               builder: (alertDialogContext) {
                 return AlertDialog(
-                  title: Text((_model.apiResultlm5?.exceptionMessage ?? '')),
+                  title: Text(getJsonField(
+                    (_model.apiResultlm5?.jsonBody ?? ''),
+                    r'''$.msg''',
+                  ).toString().toString()),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(alertDialogContext),
@@ -94,7 +72,29 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 );
               },
             );
+            await actions.checkTokenExpired(
+              context,
+              getJsonField(
+                (_model.apiResultlm5?.jsonBody ?? ''),
+                r'''$.msg''',
+              ).toString().toString(),
+            );
           }
+        } else {
+          await showDialog(
+            context: context,
+            builder: (alertDialogContext) {
+              return AlertDialog(
+                title: Text((_model.apiResultlm5?.exceptionMessage ?? '')),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(alertDialogContext),
+                    child: Text('Ok'),
+                  ),
+                ],
+              );
+            },
+          );
         }
       }
     });
