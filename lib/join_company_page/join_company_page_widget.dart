@@ -2,6 +2,7 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -154,10 +155,72 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                   FFAppState().userData,
                                   r'''$.id''',
                                 ).toString(),
-                                companyId: _model.textController.text,
+                                companyCode: _model.textController.text,
                               );
                               if ((_model.apiResultcwt?.succeeded ?? true)) {
-                                setState(() {});
+                                if (functions.isSuccess(getJsonField(
+                                  (_model.apiResultcwt?.jsonBody ?? ''),
+                                  r'''$.status''',
+                                ))) {
+                                  _model.apiResultj5j =
+                                      await GetuserdetailCall.call(
+                                    token: getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.token''',
+                                    ).toString(),
+                                    uid: getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.id''',
+                                    ).toString(),
+                                  );
+                                  if ((_model.apiResultj5j?.succeeded ??
+                                      true)) {
+                                    FFAppState().userData = getJsonField(
+                                      (_model.apiResultj5j?.jsonBody ?? ''),
+                                      r'''$.data''',
+                                    );
+
+                                    context.goNamed('HomePage');
+                                  } else {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text((_model.apiResultj5j
+                                                      ?.statusCode ??
+                                                  200)
+                                              .toString()),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                } else {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text(getJsonField(
+                                          (_model.apiResultcwt?.jsonBody ?? ''),
+                                          r'''$.msg''',
+                                        ).toString()),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('Ok'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               } else {
                                 await showDialog(
                                   context: context,
@@ -250,8 +313,8 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 16.0),
                           child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
+                            onPressed: () async {
+                              context.pushNamed('CreateCompanyPage');
                             },
                             text: 'Create company',
                             options: FFButtonOptions(

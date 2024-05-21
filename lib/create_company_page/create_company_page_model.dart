@@ -1,3 +1,5 @@
+import '/backend/api_requests/api_calls.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -22,6 +24,11 @@ class CreateCompanyPageModel extends FlutterFlowModel<CreateCompanyPageWidget> {
 
     return null;
   }
+
+  // Stores action output result for [Backend Call - API (createcompany)] action in Button widget.
+  ApiCallResponse? apiResult97m;
+  // Stores action output result for [Backend Call - API (getuserdetail)] action in Button widget.
+  ApiCallResponse? apiResult68s;
 
   @override
   void initState(BuildContext context) {

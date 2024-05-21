@@ -1,3 +1,5 @@
+import '/backend/api_requests/api_calls.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -38,6 +40,8 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -48,6 +52,20 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
+          leading: FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30.0,
+            borderWidth: 1.0,
+            buttonSize: 60.0,
+            icon: Icon(
+              Icons.chevron_left_rounded,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              context.pop();
+            },
+          ),
           title: Text(
             'Create company',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -142,8 +160,83 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 16.0),
                           child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
+                            onPressed: () async {
+                              if (_model.formKey.currentState == null ||
+                                  !_model.formKey.currentState!.validate()) {
+                                return;
+                              }
+                              _model.apiResult97m =
+                                  await CreatecompanyCall.call(
+                                authorization: getJsonField(
+                                  FFAppState().userData,
+                                  r'''$.token''',
+                                ).toString(),
+                                uid: getJsonField(
+                                  FFAppState().userData,
+                                  r'''$.id''',
+                                ).toString(),
+                                companyName: _model.textController.text,
+                              );
+                              if ((_model.apiResult97m?.succeeded ?? true)) {
+                                _model.apiResult68s =
+                                    await GetuserdetailCall.call(
+                                  token: getJsonField(
+                                    FFAppState().userData,
+                                    r'''$.token''',
+                                  ).toString(),
+                                  uid: getJsonField(
+                                    FFAppState().userData,
+                                    r'''$.id''',
+                                  ).toString(),
+                                );
+                                if ((_model.apiResult68s?.succeeded ?? true)) {
+                                  FFAppState().userData = getJsonField(
+                                    (_model.apiResult68s?.jsonBody ?? ''),
+                                    r'''$.data''',
+                                  );
+
+                                  context.goNamed('HomePage');
+                                } else {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (alertDialogContext) {
+                                      return AlertDialog(
+                                        title: Text(getJsonField(
+                                          (_model.apiResult68s?.jsonBody ?? ''),
+                                          r'''$.msg''',
+                                        ).toString()),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                alertDialogContext),
+                                            child: Text('Ok'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              } else {
+                                await showDialog(
+                                  context: context,
+                                  builder: (alertDialogContext) {
+                                    return AlertDialog(
+                                      title: Text((_model
+                                              .apiResult97m?.exceptionMessage ??
+                                          '')),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(alertDialogContext),
+                                          child: Text('Ok'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+
+                              setState(() {});
                             },
                             text: 'Create company',
                             options: FFButtonOptions(

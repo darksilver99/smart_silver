@@ -34,6 +34,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -54,7 +56,23 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome : aaaaa',
+                        'Welcome : ${getJsonField(
+                          FFAppState().userData,
+                          r'''$.first_name''',
+                        ).toString()} ${getJsonField(
+                          FFAppState().userData,
+                          r'''$.last_name''',
+                        ).toString()}',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Manrope',
+                              letterSpacing: 0.0,
+                            ),
+                      ),
+                      Text(
+                        'Email : ${getJsonField(
+                          FFAppState().userData,
+                          r'''$.username''',
+                        ).toString()}',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Manrope',
                               letterSpacing: 0.0,
@@ -75,8 +93,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                       ),
                       FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          FFAppState().userData = null;
+
+                          context.goNamed('LoginPage');
                         },
                         text: 'Log out',
                         options: FFButtonOptions(

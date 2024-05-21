@@ -60,6 +60,32 @@ class TestdataCall {
   }
 }
 
+class GetuserdetailCall {
+  static Future<ApiCallResponse> call({
+    String? baseURL = 'https://smart.silver-api.com',
+    String? token =
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhcmtzaWx2ZXIwMEBob3RtYWlsLmNvbSIsImlhdCI6MTcxNTk0MzU0NCwiZXhwIjoxNzE1OTQ3MTQ0fQ.wYSOERHQsEOMNpddNNUu9CMxVeM26emoaxrri6Q9OUo',
+    String? uid = '',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'getuserdetail',
+      apiUrl: '${baseURL}/api/get_user_detail',
+      callType: ApiCallType.GET,
+      headers: {
+        'Authorization': '${token}',
+      },
+      params: {
+        'uid': uid,
+      },
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
 class CreateuserCall {
   static Future<ApiCallResponse> call({
     String? baseURL = 'https://smart.silver-api.com',
@@ -97,12 +123,12 @@ class JoincompanyCall {
     String? baseURL = 'https://smart.silver-api.com',
     String? authorization = '',
     String? uid = '',
-    String? companyId = '',
+    String? companyCode = '',
   }) async {
     final ffApiRequestBody = '''
 {
   "uid": "${uid}",
-  "company_id": "${companyId}"
+  "company_code": "${companyCode}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'joincompany',
