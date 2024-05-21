@@ -2,6 +2,7 @@ import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -36,7 +37,64 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
         ))) {
           context.goNamed('JoinCompanyPage');
         } else {
-          context.goNamed('HomePage');
+          await GetuserdetailCall.call(
+            authorization: getJsonField(
+              FFAppState().userData,
+              r'''$.token''',
+            ).toString().toString(),
+            uid: getJsonField(
+              FFAppState().userData,
+              r'''$.id''',
+            ).toString().toString(),
+          );
+          if ((_model.apiResultlm5?.succeeded ?? true)) {
+            if (functions.isSuccess(getJsonField(
+              (_model.apiResultlm5?.jsonBody ?? ''),
+              r'''$.status''',
+            ))) {
+              context.goNamed('HomePage');
+            } else {
+              await showDialog(
+                context: context,
+                builder: (alertDialogContext) {
+                  return AlertDialog(
+                    title: Text(getJsonField(
+                      (_model.apiResultlm5?.jsonBody ?? ''),
+                      r'''$.msg''',
+                    ).toString().toString()),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(alertDialogContext),
+                        child: Text('Ok'),
+                      ),
+                    ],
+                  );
+                },
+              );
+              await actions.checkTokenExpired(
+                context,
+                getJsonField(
+                  (_model.apiResultlm5?.jsonBody ?? ''),
+                  r'''$.msg''',
+                ).toString().toString(),
+              );
+            }
+          } else {
+            await showDialog(
+              context: context,
+              builder: (alertDialogContext) {
+                return AlertDialog(
+                  title: Text((_model.apiResultlm5?.exceptionMessage ?? '')),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(alertDialogContext),
+                      child: Text('Ok'),
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
       }
     });
