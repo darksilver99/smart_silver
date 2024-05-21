@@ -401,6 +401,14 @@ class ApiManager {
     }
 
     ApiCallResponse result;
+
+    print(">>>>>> headers");
+    print(headers);
+    print(">>>>>> params");
+    print(params);
+    print(">>>>>> body");
+    print(body);
+
     try {
       switch (callType) {
         case ApiCallType.GET:
