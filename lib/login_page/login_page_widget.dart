@@ -317,9 +317,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     (_model.apiResultlm5?.jsonBody ?? ''),
                                     r'''$.data.users_data_id''',
                                   ))) {
-                                    context.pushNamed('JoinCompanyPage');
+                                    context.goNamed('JoinCompanyPage');
                                   } else {
-                                    context.pushNamed('HomePage');
+                                    context.goNamed('HomePage');
                                   }
                                 } else {
                                   await showDialog(
