@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -178,31 +179,82 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
                                 companyName: _model.textController.text,
                               );
                               if ((_model.apiResult97m?.succeeded ?? true)) {
-                                _model.apiResult68s =
-                                    await GetuserdetailCall.call(
-                                  token: getJsonField(
-                                    FFAppState().userData,
-                                    r'''$.token''',
-                                  ).toString(),
-                                  uid: getJsonField(
-                                    FFAppState().userData,
-                                    r'''$.id''',
-                                  ).toString(),
-                                );
-                                if ((_model.apiResult68s?.succeeded ?? true)) {
-                                  FFAppState().userData = getJsonField(
-                                    (_model.apiResult68s?.jsonBody ?? ''),
-                                    r'''$.data''',
+                                if (functions.isSuccess(getJsonField(
+                                  (_model.apiResult97m?.jsonBody ?? ''),
+                                  r'''$.status''',
+                                ))) {
+                                  _model.apiResult68s =
+                                      await GetuserdetailCall.call(
+                                    token: getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.token''',
+                                    ).toString(),
+                                    uid: getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.id''',
+                                    ).toString(),
                                   );
+                                  if ((_model.apiResult68s?.succeeded ??
+                                      true)) {
+                                    if (functions.isSuccess(getJsonField(
+                                      (_model.apiResult68s?.jsonBody ?? ''),
+                                      r'''$.status''',
+                                    ))) {
+                                      FFAppState().userData = getJsonField(
+                                        (_model.apiResult68s?.jsonBody ?? ''),
+                                        r'''$.data''',
+                                      );
 
-                                  context.goNamed('HomePage');
+                                      context.goNamed('HomePage');
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text(getJsonField(
+                                              (_model.apiResult68s?.jsonBody ??
+                                                  ''),
+                                              r'''$.msg''',
+                                            ).toString()),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  } else {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text(getJsonField(
+                                            (_model.apiResult68s?.jsonBody ??
+                                                ''),
+                                            r'''$.msg''',
+                                          ).toString()),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
                                 } else {
                                   await showDialog(
                                     context: context,
                                     builder: (alertDialogContext) {
                                       return AlertDialog(
                                         title: Text(getJsonField(
-                                          (_model.apiResult68s?.jsonBody ?? ''),
+                                          (_model.apiResult97m?.jsonBody ?? ''),
                                           r'''$.msg''',
                                         ).toString()),
                                         actions: [

@@ -79,7 +79,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             ),
                       ),
                       Text(
-                        'Current company : silver',
+                        'Current company : ${getJsonField(
+                          FFAppState().userData,
+                          r'''$.users_data_id''',
+                        ).toString()}',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Manrope',
                               letterSpacing: 0.0,

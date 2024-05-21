@@ -175,21 +175,45 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                   );
                                   if ((_model.apiResultj5j?.succeeded ??
                                       true)) {
-                                    FFAppState().userData = getJsonField(
-                                      (_model.apiResultj5j?.jsonBody ?? ''),
-                                      r'''$.data''',
-                                    );
+                                    if (functions.isSuccess(getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.status''',
+                                    ))) {
+                                      FFAppState().userData = getJsonField(
+                                        (_model.apiResultj5j?.jsonBody ?? ''),
+                                        r'''$.data''',
+                                      );
 
-                                    context.goNamed('HomePage');
+                                      context.goNamed('HomePage');
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: Text(getJsonField(
+                                              (_model.apiResultj5j?.jsonBody ??
+                                                  ''),
+                                              r'''$.msg''',
+                                            ).toString()),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext),
+                                                child: Text('Ok'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   } else {
                                     await showDialog(
                                       context: context,
                                       builder: (alertDialogContext) {
                                         return AlertDialog(
                                           title: Text((_model.apiResultj5j
-                                                      ?.statusCode ??
-                                                  200)
-                                              .toString()),
+                                                  ?.exceptionMessage ??
+                                              '')),
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(
@@ -226,10 +250,9 @@ class _JoinCompanyPageWidgetState extends State<JoinCompanyPageWidget> {
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text(
-                                          (_model.apiResultcwt?.statusCode ??
-                                                  200)
-                                              .toString()),
+                                      title: Text((_model
+                                              .apiResultcwt?.exceptionMessage ??
+                                          '')),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>
