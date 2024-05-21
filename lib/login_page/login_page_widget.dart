@@ -30,7 +30,14 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (FFAppState().userData != null) {
-        context.goNamed('HomePage');
+        if (functions.isNull(getJsonField(
+          FFAppState().userData,
+          r'''$.users_data_id''',
+        ))) {
+          context.goNamed('JoinCompanyPage');
+        } else {
+          context.goNamed('HomePage');
+        }
       }
     });
 
@@ -281,10 +288,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   context: context,
                                   builder: (alertDialogContext) {
                                     return AlertDialog(
-                                      title: Text(
-                                          (_model.apiResultlm5?.statusCode ??
-                                                  200)
-                                              .toString()),
+                                      title: Text((_model
+                                              .apiResultlm5?.exceptionMessage ??
+                                          '')),
                                       actions: [
                                         TextButton(
                                           onPressed: () =>

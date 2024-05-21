@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -454,21 +455,45 @@ class _RegisterPageWidgetState extends State<RegisterPageWidget> {
                                   lastName: _model.textController5.text,
                                 );
                                 if ((_model.apiResultumx?.succeeded ?? true)) {
-                                  FFAppState().userData = getJsonField(
+                                  if (functions.isSuccess(getJsonField(
                                     (_model.apiResultumx?.jsonBody ?? ''),
-                                    r'''$.data''',
-                                  );
+                                    r'''$.status''',
+                                  ))) {
+                                    FFAppState().userData = getJsonField(
+                                      (_model.apiResultumx?.jsonBody ?? ''),
+                                      r'''$.data''',
+                                    );
 
-                                  context.pushNamed('JoinCompanyPage');
+                                    context.pushNamed('JoinCompanyPage');
+                                  } else {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (alertDialogContext) {
+                                        return AlertDialog(
+                                          title: Text(getJsonField(
+                                            (_model.apiResultumx?.jsonBody ??
+                                                ''),
+                                            r'''$.msg''',
+                                          ).toString()),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  alertDialogContext),
+                                              child: Text('Ok'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
                                 } else {
                                   await showDialog(
                                     context: context,
                                     builder: (alertDialogContext) {
                                       return AlertDialog(
-                                        title: Text(
-                                            (_model.apiResultumx?.statusCode ??
-                                                    200)
-                                                .toString()),
+                                        title: Text((_model.apiResultumx
+                                                ?.exceptionMessage ??
+                                            '')),
                                         actions: [
                                           TextButton(
                                             onPressed: () => Navigator.pop(
