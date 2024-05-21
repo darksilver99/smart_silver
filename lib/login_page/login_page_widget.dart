@@ -48,7 +48,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           ))) {
             if (functions.isNull(getJsonField(
               (_model.apiResultlm6?.jsonBody ?? ''),
-              r'''$.users_data_id''',
+              r'''$.data.users_data_id''',
             ))) {
               context.goNamed('JoinCompanyPage');
             } else {
