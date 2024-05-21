@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'create_company_page_widget.dart' show CreateCompanyPageWidget;
 import 'package:flutter/material.dart';
@@ -25,6 +26,10 @@ class CreateCompanyPageModel extends FlutterFlowModel<CreateCompanyPageWidget> {
 
     return null;
   }
+
+  bool isDataUploading = false;
+  FFUploadedFile uploadedLocalFile =
+      FFUploadedFile(bytes: Uint8List.fromList([]));
 
   // Stores action output result for [Backend Call - API (createcompany)] action in Button widget.
   ApiCallResponse? apiResult97m;
