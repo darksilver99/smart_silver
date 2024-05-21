@@ -185,13 +185,13 @@ class _CreateCompanyPageWidgetState extends State<CreateCompanyPageWidget> {
                                 ))) {
                                   _model.apiResult68s =
                                       await GetuserdetailCall.call(
-                                    token: getJsonField(
-                                      FFAppState().userData,
-                                      r'''$.token''',
-                                    ).toString(),
                                     uid: getJsonField(
                                       FFAppState().userData,
                                       r'''$.id''',
+                                    ).toString(),
+                                    authorization: getJsonField(
+                                      FFAppState().userData,
+                                      r'''$.token''',
                                     ).toString(),
                                   );
                                   if ((_model.apiResult68s?.succeeded ??

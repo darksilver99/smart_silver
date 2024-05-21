@@ -63,7 +63,7 @@ class TestdataCall {
 class GetuserdetailCall {
   static Future<ApiCallResponse> call({
     String? baseURL = 'https://smart.silver-api.com',
-    String? token =
+    String? authorization =
         'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhcmtzaWx2ZXIwMEBob3RtYWlsLmNvbSIsImlhdCI6MTcxNTk0MzU0NCwiZXhwIjoxNzE1OTQ3MTQ0fQ.wYSOERHQsEOMNpddNNUu9CMxVeM26emoaxrri6Q9OUo',
     String? uid = '',
   }) async {
@@ -72,7 +72,7 @@ class GetuserdetailCall {
       apiUrl: '${baseURL}/api/get_user_detail',
       callType: ApiCallType.GET,
       headers: {
-        'Authorization': '${token}',
+        'Authorization': '${authorization}',
       },
       params: {
         'uid': uid,
